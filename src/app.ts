@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { ExpressAdapter } from '@bull-board/express';
+import { sendNewEmail } from './queues/email.queue';
 
 const serverAdapter = new ExpressAdapter();
 
@@ -11,7 +12,8 @@ serverAdapter.setBasePath('/admin/queues');
 app.use('/admin/queues', serverAdapter.getRouter());
 
 app.post('/send-email', async (req, res) => {
-    res.send({ status: 'ok' });
+  await sendNewEmail(req.body)
+    res.send({ status: 'good job jorge' });
 });
 
 app.listen(5000, () => console.log('App running on port 5000'));
